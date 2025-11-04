@@ -4,6 +4,7 @@ from collections import defaultdict,Counter
 import heapq
 
 class Solution:
+    # november 4th 2025
     def findXSum(self, nums: list[int], k: int, x: int) -> list[int]:
         """
         1. count the occurences of all elemen
@@ -44,6 +45,7 @@ class Solution:
 
 
 
+    # november 5th 2025
 
 
-
+    
