@@ -46,6 +46,7 @@ class Solution:
 
 
     # november 5th 2025
-
+    def findXSum(self, nums: list[int], k: int, x: int) -> list[int]:
+        pass
 
     

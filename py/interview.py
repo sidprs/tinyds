@@ -22,11 +22,7 @@ class Solution:
 
 
 # 
-"""
-    a
-   b c
- d e  g
-"""
+
 
         final_sum = 0
 

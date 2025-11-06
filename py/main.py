@@ -80,8 +80,24 @@ class BST:
             return self.insert(root.left, val)
         return root
     
+    def minNode(self, root):
+        curr = root
+        while curr and curr.left:
+            curr = curr.left
+        return curr
+
     def remove(self, root, val):
-        # case if there is 
+        if not root:
+            return 
+        if val > root.val:
+            root.right = self.root(root.right, val)
+        elif val < root.val:
+            root.left = self.root(root.left ,val)
+        else: 
+            minNodeInTree = self.minNode(root.right)
+            root.val = minNodeInTree.val
+            root.right = self.remove(root.right, minNodeInTree.val)
+        return root
     
     def inorder_rec_dfs(self, root):
         res = []

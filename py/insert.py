@@ -11,14 +11,14 @@ class Graph:
     
 
     def remove(self, root):
-        
+        pass
 
     def min(self, root):
-
+        pass
 
     def insert(self, root, value):
         if not root:
-            return TreeNode(val)
+            return TreeNode(value)
 
         if root.val < value: 
             root.right = self.insert(root.right, value)
@@ -27,17 +27,17 @@ class Graph:
         
         return root
 
-    def inorderT(self, root):
-       res = [] 
-        def inorder(root):
-            if not root:
-                return 
-            
-            self.inorder(root.left)
-            res.append(root.val)
-            self.inorder(root.left)
-        self.inorder(root)
-        return res
+    def inorder(self, root):
+        
+        res = []
+        if not root:
+            return 
+        
+        self.inorder(root.left)
+        res.append(root.val)
+        self.inorder(root.right)
+        return res 
+        
 
     def inorderDFS(self, root):
         stack = []

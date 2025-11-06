@@ -77,7 +77,8 @@ then pick the second frequent word
 repeat until the heapq is empty 
 
 Output: "xyay"
-
+"""
+from collections import Counter
 class Solution:
     def reorganizeString(self, s: str) -> str:
         count = Counter(s)
@@ -103,6 +104,5 @@ class Solution:
 
         return res
 
-"""
 
 

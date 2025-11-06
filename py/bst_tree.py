@@ -51,7 +51,7 @@ class BST:
 
 
 class Solution:
-    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    def inorderTraversal(self, root: [TreeNode]) -> [int]:
         res = []
         def inorder(root):
             if not root:

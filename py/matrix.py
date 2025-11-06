@@ -34,7 +34,7 @@ class Graph:
 
         while queue:
             for _ in range(len(queue)):
-                r,c = popleft()
+                r,c = queue.popleft()
                 if r == ROWS - 1 and c == COLS - 1:
                     return distance
 
