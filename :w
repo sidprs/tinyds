@@ -1,0 +1,39 @@
+
+
+class Node:
+    def __init__(self, val, right=0, left=0):
+        self.val = val
+        self.right = right
+        self.left = left
+
+
+
+class BinarySearchTree:
+    def insert(self, val: int) -> Node:
+        if not root:
+            return Node(val)
+        
+        if not root.left and not root.right:
+            root.left = insert(root.left, val)
+            root.right = insert(root.left, val)
+
+
+
+    def remove(self, key: int) -> Node:
+
+
+    def bfs(self, root):
+        pass
+
+
+    def dfs_rec(self, root):
+        pass
+
+
+
+    def dfs_iter(self, root):
+        pass
+
+
+    def bfs_rec(self,root):
+        pass
