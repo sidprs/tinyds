@@ -1,6 +1,9 @@
 #include <iostream>
 #include <vector>
   
+#include <mutex>
+#include <condition_variable>
+#include <stdexcept>
 
 
 class RingBuffer{
@@ -25,7 +28,7 @@ class RingBuffer{
     RingBuffer operator=( RingBuffer&&);
 
 
-}
+};
 
 
 
