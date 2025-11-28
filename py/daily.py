@@ -38,15 +38,13 @@ class Solution:
                 x_sum += count * num
             answer.append(x_sum)
             print(answer)
-
-
-
         return answer
-
-
 
     # november 5th 2025
     def findXSum(self, nums: list[int], k: int, x: int) -> list[int]:
         pass
 
+    # november 6th 2025
+    def processQueries(self, c:int, connections: list[list[int]], queries: list[list[int]])_-> list[int]:
+        pass
     
