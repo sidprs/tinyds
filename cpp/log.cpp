@@ -27,6 +27,7 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
+#include <map>
 #include <cctype> 
 #include <string>
 #include <sstream>
@@ -69,42 +70,53 @@ class Log{
       std::ifstream file(Filename); // create instance of file
       if(!file.is_open()) { std::cerr << " Error opening file " << Filename << "\n"; return code::READ_1;}
       clearData();
-      std::string line;
-      int line_number = 0;
-      std::string segment;
-      std::vector<int> segments;
 
-      while (std::getline(file, line)) {
-        line_number++;
-        auto l = line.find('<');
-        // find('char_searching', start_pos)
-        if( l == std::string::npos) return code::READ_1;
-        auto r = line.find('>', l+1);
-        if (r == std::string::npos) return code::READ_1;
-        std::string inside = line.substr(l + 1, r - l - 1);
-        std::stringstream ss_int(inside);
-        int x;
-        while (ss_int >> x) segments.push_back(x);
-        LogInts_[line_number] = segments;
+      // put the whole file in the content string
+      std::stringstream buffer_;
+      buffer_ << file.rdbuf();
+      std::string content = buffer_.str();
+
+      std::vector<int> line_no;
+      int curr_line = 1;
+      for(const auto& c : content){
+        line_no.push_back(curr_line);
+        if (c == '\n') curr_line++;
       }
+      size_t position = 0;
+      while(position < content.size()){
+          auto left_bound = content.find('<', position);
+          if(left_bound == std::string::npos) break;
+          auto right_bound = content.find('>', left_bound + 1);
+          if(right_bound == std::string::npos) return code::READ_1;
+          std::string inside = content.substr(left_bound+1, right_bound - left_bound - 1);
+          std::stringstream ss(inside);
+          std::vector<int>segments; int x;
+          while(ss >> x ) segments.push_back(x);
+          int start_line = line_no[left_bound];
+          LogInts_[start_line] = segments;
+          position = right_bound + 1;
+      }
+
+
       //clearData();
     return code::READ_0;
   }            
 
   void Print() {
-        for(const auto& [line_num, values] : LogInts_) {
-            std::cout << "< ";
-            for(const auto& val : values) {
-                std::cout << val << " ";
-            }
-            std::cout << "> (line " << line_num << ")\n";
-        }
+    for(const auto& [line_num, values] : LogInts_) {
+          std::cout << "[ ";
+          for(const auto& val : values) {
+              std::cout <<  val << " ";
+          }
+          
+          std::cout << "] [line " << line_num << "]\n";
+      }
 
   }
   private:
     std::string Filename;
     std::vector<std::string> LogData_;
-    std::unordered_map<int, std::vector<int>> LogInts_;
+    std::map<int, std::vector<int>> LogInts_;
     std::vector<Meta> MetaData_;
     void clearData(){
       LogInts_.clear();
