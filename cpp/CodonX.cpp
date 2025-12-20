@@ -87,12 +87,6 @@ public:
 private:
   std::unordered_map<std::string, char> converted_aminos;
 
-  void add(std::initializer_list<const char *> codons, char amino_acid) {
-    for (const char *c : codons) {
-      converted_aminos[std::string(c)] = amino_acid;
-    }
-  }
-
   void default_table() {
     add({"ATT", "ATC", "ATA"}, 'I'); // Isoleucine
     add({"CTT", "CTC", "CTA", "CTG", "TTA", "TTG"}, 'L'); // Leucine
@@ -119,6 +113,13 @@ private:
     converted_aminos["TAG"] = '|';
     converted_aminos["TGA"] = '|';
   }
+
+  void add(std::initializer_list<const char *> codons, char amino_acid) {
+    for (const char *c : codons) {
+      converted_aminos[std::string(c)] = amino_acid;
+    }
+  }
+
 };
 
 class GeneScanner {
