@@ -31,6 +31,7 @@
 #include <cctype> 
 #include <string>
 #include <sstream>
+#include <stack>
 
 namespace SESH {
   enum class Event{
@@ -57,14 +58,14 @@ struct Meta{
   double timestamp_ms;
   int user_id;
   int session_id;
+  std::vector<int> linNo_;
 };
 
 
-template <typename K, typename V>
 class Log{
   public:
     explicit Log(const std::string& fname) : Filename(fname){}
-    SESH::Code LogFileParser(){
+    std::optional<SESH::Code> LogFileParser(char search_value){
         std::cout << "[ LogFileParser ]" << std::endl;
         std::ifstream file(Filename); // create instance of file
         if(!file.is_open()) { std::cerr << " Error opening file " << Filename << "\n"; return code::READ_1;}
@@ -81,57 +82,64 @@ class Log{
             line_no.push_back(curr_line);
             if (c == '\n') curr_line++;
         }
-        size_t position = 0;
+      Parse(content,line_no,search_value);
+        
+   
+     return code::READ_0;
+  }         
+
+  SESH::Code Parse(const std::string& content, const std::vector<int>& line_no, const char& search_value){
+    // read the [] statements
+    std::cout << "here" << std::endl;
+    size_t position = 0;
+    char complement;
+    if (search_value != '[' && search_value != '<') return code::LOG_1;
+    if (search_value == '[')  complement = ']';
+    if (search_value == '<')  complement = '>';
+    std::stack<size_t> stack_;
+    
+        
         while(position < content.size()){
-              auto left_bound = content.find('<', position);
+              auto left_bound = content.find(search_value, position);
+              std::cout << *left_bound << std::endl;
               if(left_bound == std::string::npos) break;
-              auto right_bound = content.find('>', left_bound + 1);
+              auto right_bound = content.find(complement, left_bound + 1);
               if(right_bound == std::string::npos) return code::READ_1;
               std::string inside = content.substr(left_bound+1, right_bound - left_bound - 1);
               std::stringstream ss(inside);
               std::vector<int>segments; int x;
               while(ss >> x ) segments.push_back(x);
               int start_line = line_no[left_bound];
-              LogInts_[start_line] = segments;
+              LogInts_[start_line].push_back(segments);
               position = right_bound + 1;
         }
-
-
-        //clearData();
-      return code::READ_0;
-  }            
-
-  SESH::Code LogMetaData(){
-      // read [] statements , map them to the Meta struct
-      // once mapped to the struct, then link them to new data structure 
-      // this structure will include std::map< int (line_number) , Meta (metadata), std::vector<int>> (LogInts_) > 
+      return code::LOG_0;
+  }   
 
 
 
-
-    return code::READ_0;    
-  } 
-
-
-  void Print() {
-    
-    // TODO : switch case statement based on what private type to print out 
-    for(const auto& [line_num, values] : LogInts_) {
-          std::cout << "[ ";
-          for(const auto& val : values) {
-              std::cout <<  val << " ";
-          }
-          
-          std::cout << "] [line " << line_num << "]\n";
-      }
-
+  
+ void Print() {
+    for(const auto& [line_num, list_of_lists] : LogInts_) {
+        for(const auto& values : list_of_lists) {
+            std::cout << "[ ";
+            for(const auto& val : values) {
+                std::cout << val << " ";
+            }
+            std::cout << "] ";
+        }
+        std::cout << "[line " << line_num << "]\n";
+    }
+  }
+  std::map<int, std::vector<std::vector<int>>> getLogMap(){
+    return LogInts_;
   }
   private:
     using code = SESH::Code;
     std::string Filename;
     std::vector<std::string> LogData_;
-    std::map<int, std::vector<int>> LogInts_;
-    std::map<Meta , int, std::vector<int>> LogMetaData_;
+    std::map<int, std::vector<std::vector<int>>> LogInts_;
+    std::map<Meta , std::vector<int>> LogMetaData_;
     
     void clearData(){
       LogInts_.clear();
@@ -140,19 +148,20 @@ class Log{
 };
 
 
-
-
 int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    std::cerr << "Usage: ./log <file>\n";
+  if (argc < 3) {
+    std::cerr << "Usage: ./log <file> <search_value> \n";
     return 1;
   }
 
   std::string filename = argv[1];
+  char search_value = *argv[2];
+
+  std::cout << search_value << std::endl;
 
   std::cout << filename << std::endl;
-  Log<std::string, std::string> logger(filename);
-  logger.LogFileParser();
+  Log logger(filename);
+  logger.LogFileParser(search_value);
   logger.Print();
 
   //
