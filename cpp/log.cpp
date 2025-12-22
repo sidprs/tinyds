@@ -101,7 +101,6 @@ class Log{
         
         while(position < content.size()){
               auto left_bound = content.find(search_value, position);
-              std::cout << *left_bound << std::endl;
               if(left_bound == std::string::npos) break;
               auto right_bound = content.find(complement, left_bound + 1);
               if(right_bound == std::string::npos) return code::READ_1;
