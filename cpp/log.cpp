@@ -59,6 +59,8 @@ struct Meta{
   int user_id;
   int session_id;
   std::vector<int> linNo_;
+  std::map<int, std::vector<std::vector<int>>> LogInts_;
+  
 };
 
 
@@ -82,9 +84,12 @@ class Log{
             line_no.push_back(curr_line);
             if (c == '\n') curr_line++;
         }
-      Parse(content,line_no,search_value);
-        
-   
+    auto code = Parse(content,line_no,search_value);
+    std::cout <<  "PARSE ENDED WITH CODE"  << std::endl; 
+  
+    
+
+
      return code::READ_0;
   }         
 
@@ -96,8 +101,6 @@ class Log{
     if (search_value != '[' && search_value != '<') return code::LOG_1;
     if (search_value == '[')  complement = ']';
     if (search_value == '<')  complement = '>';
-    std::stack<size_t> stack_;
-    
         
         while(position < content.size()){
               auto left_bound = content.find(search_value, position);
@@ -138,7 +141,6 @@ class Log{
     std::string Filename;
     std::vector<std::string> LogData_;
     std::map<int, std::vector<std::vector<int>>> LogInts_;
-    std::map<Meta , std::vector<int>> LogMetaData_;
     
     void clearData(){
       LogInts_.clear();
@@ -146,6 +148,25 @@ class Log{
 
 };
 
+// Stores the meta data in a templated ring buffer (includes the data from < > and [ ])
+class MetaRing{
+  public:
+    explicit MetaRing(int capacity) : size_(0), capacity_(capacity),
+                                      tail_(0), head_(0),Ring_(nullptr) 
+    {
+      Ring_ = new Meta[capacity_];
+    }
+    
+    
+
+
+  private:
+    Meta *Ring_;
+    size_t size_;
+    size_t tail_;
+    size_t head_;
+    size_t capacity_;
+};
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
