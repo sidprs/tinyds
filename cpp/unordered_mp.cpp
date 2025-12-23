@@ -21,8 +21,6 @@ template<
 
 
 
-
-
 class LERP{
     private:
         std::unordered_map<double, double>v2b_;
@@ -54,7 +52,19 @@ class LERP{
         }
 
         std::pair<double, double> CalcLERP(){
+            // find the upper bound of the solution
+            for(auto& [first, second] : v2b_){
+                std::cout << first << std::endl;
+            }
 
+
+        }
+        void print(){
+          for(const auto& [k, v] : v2b_){
+            std::cout << "key :  " << k << " Value: " << v << std::endl;
+          }
+        
+  
         }
 
 
@@ -91,7 +101,13 @@ int main(){
     
     
     //std::erase_if(u, [](const auto& pair){ return pair.second.length() > 1; });
-
+    LERP run;
+    run.addV(std::pair<double, double>{1.0, 3.0});    
+    run.addV(std::pair<double, double>{2.0, 5.0});    
+    run.addV(std::pair<double, double>{2.0, 5.0});    
+    run.addV(std::pair<double, double>{2.0, 9.0});    
+    run.addV(std::pair<double, double>{3.0, 6.0});    
+    run.print();
 
     return 0;
 }

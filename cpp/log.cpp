@@ -31,6 +31,7 @@
 #include <cctype> 
 #include <string>
 #include <sstream>
+#include <stdexcept>
 #include <stack>
 
 namespace SESH {
@@ -154,11 +155,42 @@ class MetaRing{
     explicit MetaRing(int capacity) : size_(0), capacity_(capacity),
                                       tail_(0), head_(0),Ring_(nullptr) 
     {
+      if(capacity_ == 0){
+        throw std::runtime_error("capacity cannot be 0");
+      }
       Ring_ = new Meta[capacity_];
     }
-    
-    
+    /*
+      double timestamp_ms;
+      int user_id;
+      int session_id;
+      std::vector<int> linNo_;
+      std::map<int, std::vector<std::vector<int>>> LogInts_;
 
+      head_ = index where the next push/write will go
+      tail_ = index where the next pop/read will come from
+      size_ = number of valid elements in the buffer (0..capacity
+      */ 
+
+    void Push(Meta& obj){
+      size_t push_index = head_;
+      Ring_[push_index] = obj;
+
+      if(size_ == capacity_){
+        tail_ = (tail_ + 1) % capacity_;
+      } else 
+      {
+        ++size_;
+      }
+    }
+
+    Meta& Pop(){
+      if (size_ == 0) throw std::runtime_error("empty ring buffer");
+        Meta& x = Ring_[tail_];
+        tail_ = (tail_ + 1) % capacity_;
+        --size_;
+        return x;
+    }
 
   private:
     Meta *Ring_;
