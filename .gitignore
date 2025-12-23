@@ -1,0 +1,54 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+ruff_cache/
+.ipynb_checkpoints/
+
+# --- C/C++ build output ---
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.elf
+*.map
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Logs / temp ---
+*.log
+*.tmp
+*.swp
+*.bak
+
+# --- Misc binaries / archives ---
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.png
+*.jpg
+*.pdf
+
