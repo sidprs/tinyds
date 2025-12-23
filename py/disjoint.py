@@ -1,5 +1,5 @@
 
-
+# Disjoint union sets
 class DisjointSet:
     def __init__(self, n):
         self.paren = {}
