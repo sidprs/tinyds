@@ -1,0 +1,11 @@
+
+
+TODO 
+
+
+- Do the python version of the spaceX question
+- Complete the C++ logger question
+  - go the ints <need to get the metadata > 
+
+- Complete the subway and the other question in C++ 
+- Rework UI for embedded waveshare esp32 lcd 4.3 inch touch screen
