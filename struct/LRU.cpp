@@ -71,7 +71,12 @@ class LRUCache{
 
   public:
     LRUCache(size_t capacity): capacity_(capacity), size_{0}{
-      ListTasks_ = new Task[capacity_];
+      MRU_ = new Task(K(), V());  // Dummy head
+      LRU_ = new Task(K(), V());  // Dummy tail
+      // K()  and  V() are default types constructors (ex. for int is 0, string is "") 
+      MRU_->next = LRU_;
+      LRU_->prev = MRU_;
+
     }
 
     ~LRUCache(){
@@ -105,7 +110,9 @@ class LRUCache{
       if(cache_.find(key) == cache_.end()){
         throw std::runtime_error("does not exist");
       }
-      return cache_[key]->value;
+      Task t* = cache_[key]; 
+      moveToFront(t);
+      return t->value;
 
     }
 
