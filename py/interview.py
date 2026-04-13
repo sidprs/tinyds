@@ -16,7 +16,7 @@ class Node:
         self.left = left
 
 class Solution:
-     def q1(self, root):
+    def q1(self, root):
          # we need to find the max sum of paths in a tree given the root node:
          # logic : we need to go dfs down every path and then calculate each sum and then find the max 
 
@@ -47,8 +47,7 @@ class Solution:
             path.pop()
         dfs(root,[], 0)
         return final_sum 
-
-
+        
     def maxPathSumBFS(root):
         if not root:
             return 0
@@ -96,7 +95,7 @@ class Solution:
 
 
 
-     def q2(self, root):
+    def q2(self, root):
          
 
 

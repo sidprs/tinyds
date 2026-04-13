@@ -38,6 +38,8 @@ class LRUCache:
             self.remove(lru)
             del self.cache[lru.key]
 
+
+
 import heapq
 from collections import defaultdict
 
@@ -105,4 +107,44 @@ class Solution:
         return res
 
 
+'''
+    Relearning DFS and BFS in context of graphs
+    .python
+'''
 
+from collections import deque
+class Node:
+    def __init__(self, val:int):
+        self.val = val
+        self.index = 0
+    
+
+class Graph:
+    def __init__(self, size:int, direction:bool):
+        self.size = size
+        self.adjList = defaultdict(list)
+        self.isDirected = direction
+    
+    def addNode(self, u:Node, v:Node):
+        self.adjList[u].append(v)
+        if not self.isDirected: self.adjList[v].append(u)
+    
+    def bfs(self, start)->list:
+        visited = set([start])
+        queue = deque([start])
+        order = []
+         
+        while queue:
+            node = queue.popleft()
+            order.append(node)
+            for nei in self.adjList[node]:
+                if nei not in visited:
+                    visited.add(nei)
+                    queue.append(nei)
+        return order
+
+    def dfs(self, start)->list:
+       pass 
+        
+    
+         
